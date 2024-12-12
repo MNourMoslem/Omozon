@@ -31,8 +31,12 @@ def register_user(request):
 
 @login_required
 def profile_view(request):
-    profile = request.user.buyer_profile if request.user.account_type == 'BUYER' else request.user.seller_profile
-    return render(request, 'accounts/profile.html', {'profile': profile})
+    if request.user.account_type == 'BUYER':
+        return render(request, 'accounts/buyer_profile.html')
+    elif request.user.account_type == 'SELLER':
+        return render(request, 'accounts/seller_profile.html')
+    else:
+        return redirect('home')
 
 @login_required
 def switch_to_seller(request):

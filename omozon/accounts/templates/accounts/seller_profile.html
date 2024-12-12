@@ -1,23 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'accounts/base_profile.html' %}
 
-{% block content %}
-<div class="profile-container">
-    <h2>Seller Profile</h2>
-    <p>Username: {{ user.username }}</p>
-    <p>Email: {{ user.email }}</p>
-    
-    <div class="seller-stats">
-        <h3>Seller Statistics</h3>
-        <p>Business Name: {{ profile.business_name|default:"Not Set" }}</p>
-        <p>Total Products: {{ profile.total_products }}</p>
-        <p>Total Sales: ${{ profile.total_sales }}</p>
-        <p>Seller Rating: {{ profile.seller_rating }}/5.0</p>
-    </div>
-    
-    <div class="seller-actions">
-        <a href="{% url 'seller_products' %}" class="btn btn-primary">
-            Manage Products
-        </a>
-    </div>
+{% block profile_specific_content %}
+<h3>Seller Profile</h3>
+<p>Business Name: {{ user.seller_profile.business_name|default:"Not Set" }}</p>
+<p>Business Description: {{ user.seller_profile.business_description|default:"Not Set" }}</p>
+<p>Total Products: {{ user.seller_profile.total_products }}</p>
+<p>Total Sales: ${{ user.seller_profile.total_sales }}</p>
+<p>Seller Rating: {{ user.seller_profile.seller_rating }}/5.0</p>
+
+<div class="profile-actions">
+    <a href="{% url 'seller_products' %}" class="btn btn-info">My Products</a>
+    <a href="{% url 'order_list' %}" class="btn btn-info">View My Orders</a>
 </div>
 {% endblock %}

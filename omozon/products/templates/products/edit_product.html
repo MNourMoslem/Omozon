@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="edit-product-container">
+    <h2>Edit Product: {{ product.name }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update Product</button>
+    </form>
+    <a href="{% url 'seller_products' %}" class="btn btn-secondary">Cancel</a>
+</div>
+{% endblock %} 

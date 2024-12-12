@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Product
 from .forms import ProductForm
 
@@ -53,11 +54,12 @@ def edit_product(request, product_id):
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
+            messages.success(request, "Product updated successfully!")
             return redirect('seller_products')
     else:
         form = ProductForm(instance=product)
     
-    return render(request, 'products/edit_product.html', {'form': form})
+    return render(request, 'products/edit_product.html', {'form': form, 'product': product})
 
 @login_required
 def delete_product(request, product_id):
@@ -68,8 +70,7 @@ def delete_product(request, product_id):
     
     if request.method == 'POST':
         product.delete()
-        # Update seller's product count
-        request.user.seller_profile.update_product_count()
+        messages.success(request, "Product deleted successfully!")
         return redirect('seller_products')
     
     return render(request, 'products/delete_product.html', {'product': product})

@@ -1,17 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'accounts/base_profile.html' %}
 
-{% block content %}
-<div class="profile-container">
-    <h2>Buyer Profile</h2>
-    <p>Username: {{ user.username }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Total Purchases: ${{ profile.total_purchases }}</p>
-    <p>Shipping Address: {{ profile.default_shipping_address|default:"Not set" }}</p>
-    
-    {% if user.can_become_seller %}
-        <a href="{% url 'switch_to_seller' %}" class="btn btn-primary">
-            Switch to Seller Account
-        </a>
-    {% endif %}
+{% block profile_specific_content %}
+<h3>Buyer Profile</h3>
+<p>Total Purchases: ${{ user.buyer_profile.total_purchases }}</p>
+<p>Shipping Address: {{ user.buyer_profile.default_shipping_address|default:"Not set" }}</p>
+
+<div class="profile-actions">
+    <a href="{% url 'order_list' %}" class="btn btn-info">View My Orders</a>
 </div>
 {% endblock %} 
