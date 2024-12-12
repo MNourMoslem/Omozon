@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="switch-to-seller-container">
+    <h2>Switch to Seller Account</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if user.can_become_seller %}
+        <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to switch to a seller account?</p>
+            <button type="submit">Confirm Switch</button>
+        </form>
+    {% else %}
+        <p>You are already a seller account.</p>
+    {% endif %}
+</div>
+{% endblock %} 
