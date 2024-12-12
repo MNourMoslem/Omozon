@@ -1,0 +1,41 @@
+/* Base styles for the entire application */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+}
+
+.navbar a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.messages {
+    margin: 10px;
+}
+
+.content {
+    padding: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+} 

@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'orders/checkout.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="checkout-container">
     <h2>Checkout</h2>
@@ -37,7 +43,7 @@
             
             <div class="shipping-info">
                 <h3>Shipping Information</h3>
-                <textarea name="shipping_address" required placeholder="Enter your shipping address"></textarea>
+                <textarea name="shipping_address" required placeholder="Enter your shipping address">{{ default_shipping_address }}</textarea>
             </div>
             
             <button type="submit" class="btn btn-primary">Place Order</button>
@@ -46,4 +52,4 @@
         <p>Your cart is empty. Cannot proceed to checkout.</p>
     {% endif %}
 </div>
-{% endblock %} 
+{% endblock %}

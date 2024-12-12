@@ -1,15 +1,25 @@
 {% extends 'accounts/base_profile.html' %}
 
-{% block profile_specific_content %}
-<h3>Seller Profile</h3>
-<p>Business Name: {{ user.seller_profile.business_name|default:"Not Set" }}</p>
-<p>Business Description: {{ user.seller_profile.business_description|default:"Not Set" }}</p>
-<p>Total Products: {{ user.seller_profile.total_products }}</p>
-<p>Total Sales: ${{ user.seller_profile.total_sales }}</p>
-<p>Seller Rating: {{ user.seller_profile.seller_rating }}/5.0</p>
+{% load static %}
 
-<div class="profile-actions">
-    <a href="{% url 'seller_products' %}" class="btn btn-info">My Products</a>
-    <a href="{% url 'order_list' %}" class="btn btn-info">View My Orders</a>
-</div>
+{% block content %}
+    {% block profile_specific_content %}
+        <h3>Seller Profile</h3>
+        <p>Business Name: {{ user.seller_profile.business_name|default:"Not Set" }}</p>
+        <p>Business Description: {{ user.seller_profile.business_description|default:"Not Set" }}</p>
+        <p>Address: {{ user.seller_profile.address|default:"Not Set" }}</p>
+        <p>City: {{ user.seller_profile.city|default:"Not Set" }}</p>
+        <p>State: {{ user.seller_profile.state|default:"Not Set" }}</p>
+        <p>Postal Code: {{ user.seller_profile.postal_code|default:"Not Set" }}</p>
+        <p>Country: {{ user.seller_profile.country|default:"Not Set" }}</p>
+        <p>Total Products: {{ user.seller_profile.total_products }}</p>
+        <p>Total Sales: ${{ user.seller_profile.total_sales }}</p>
+        <p>Seller Rating: {{ user.seller_profile.seller_rating }}/5.0</p>
+        
+        <div class="profile-actions">
+            <a href="{% url 'edit_profile' %}" class="btn btn-info">Edit Profile</a>
+            <a href="{% url 'order_list' %}" class="btn btn-info">View My Orders</a>
+            <a href="{% url 'seller_products' %}" class="btn btn-info">My Products</a>
+        </div>
+    {% endblock %}
 {% endblock %}

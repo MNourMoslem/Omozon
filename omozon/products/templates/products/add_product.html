@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'products/add_product.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="add-product-container">
@@ -6,7 +11,22 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+
+        <label for="images">Additional Images:</label>
+        <div id="image-container">
+            <input type="file" name="images" accept="image/*" class="image-input">
+        </div>
+        <button type="button" id="add-image-button" class="btn btn-secondary">Add Image</button>
+
         <button type="submit" class="btn btn-primary">Add Product</button>
     </form>
+
+    <div id="added-images" class="added-images-container">
+        <h3>Added Images:</h3>
+        <div id="image-preview-container"></div>
+    </div>
 </div>
+
+<!-- Link to external JavaScript file -->
+<script src="{% static 'products/add_product.js' %}"></script>
 {% endblock %}

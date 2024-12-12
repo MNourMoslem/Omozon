@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'products/seller_products.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="seller-products-container">
@@ -22,8 +27,8 @@
                         <td>${{ product.price }}</td>
                         <td>{{ product.stock_quantity }}</td>
                         <td>
-                            <a href="{% url 'edit_product' product.id %}">Edit</a>
-                            <a href="{% url 'delete_product' product.id %}">Delete</a>
+                            <a href="{% url 'edit_product' product.id %}" class="btn btn-secondary">Edit</a>
+                            <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -33,4 +38,5 @@
         <p>You have no products yet.</p>
     {% endif %}
 </div>
-{% endblock %} 
+
+{% endblock %}

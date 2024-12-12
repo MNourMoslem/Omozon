@@ -1,0 +1,20 @@
+.order-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-detail-container h2 {
+    text-align: center;
+}
+
+.order-detail-container p {
+    margin: 10px 0;
+}
+
+.order-detail-container .btn {
+    margin-top: 20px;
+} 

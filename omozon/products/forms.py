@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product
+from .models import Product, ProductImage
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,8 @@ class ProductForm(forms.ModelForm):
             'image', 
             'stock_quantity'
         ] 
+
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ['image'] 

@@ -123,7 +123,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+
+# Directory where static files will be collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional directories to look for static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'products/static'),  # This is where your static files are located
+    os.path.join(BASE_DIR, 'accounts/static'),  # This is where your static files are located
+    os.path.join(BASE_DIR, 'cart/static'),  # This is where your static files are located
+    os.path.join(BASE_DIR, 'orders/static'),  # This is where your static files are located
+    os.path.join(BASE_DIR, 'payments/static'),  # This is where your static files are located
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

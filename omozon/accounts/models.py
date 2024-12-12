@@ -29,6 +29,10 @@ class CustomUser(AbstractUser):
         null=True
     )
 
+    # New fields
+    default_shipping_address = models.TextField(blank=True, null=True)
+    total_purchases = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+
     def __str__(self):
         return self.username
 
@@ -95,13 +99,6 @@ class BuyerProfile(models.Model):
         CustomUser, 
         on_delete=models.CASCADE, 
         related_name='buyer_profile'
-    )
-    
-    default_shipping_address = models.TextField(blank=True, null=True)
-    total_purchases = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
-        default=0.0
     )
 
     def __str__(self):

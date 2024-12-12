@@ -1,0 +1,51 @@
+.seller-products-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.seller-products-container h2 {
+    text-align: center;
+}
+
+.seller-products-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.seller-products-container th, .seller-products-container td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.seller-products-container th {
+    background-color: #f4f4f4;
+}
+
+.seller-products-container .btn {
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.seller-products-container .btn-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+}
+
+.seller-products-container .btn-primary:hover {
+    background-color: #0056b3; /* Darker shade for hover */
+}
+
+.seller-products-container .btn-secondary {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white;
+}
+
+.seller-products-container .btn-secondary:hover {
+    background-color: #5a6268; /* Darker shade for hover */
+} 

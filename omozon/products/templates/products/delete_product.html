@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'products/delete_product.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="delete-product-container">

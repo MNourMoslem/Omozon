@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'payments/payment.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="payment-container">
@@ -9,4 +14,5 @@
         <button type="submit" class="btn btn-primary">Pay Now</button>
     </form>
 </div>
-{% endblock %} 
+
+{% endblock %}

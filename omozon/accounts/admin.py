@@ -16,7 +16,7 @@ class SellerProfileAdmin(admin.ModelAdmin):
 
 @admin.register(BuyerProfile)
 class BuyerProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'total_purchases']
+    list_display = ['user']
     search_fields = ['user__username']
 
 admin.site.register(CustomUser, CustomUserAdmin)

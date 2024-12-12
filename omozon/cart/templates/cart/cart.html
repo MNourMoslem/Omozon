@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'cart/cart.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="cart-container">
@@ -48,4 +53,7 @@
         <p>Your cart is empty.</p>
     {% endif %}
 </div>
-{% endblock %} 
+
+<!-- Link to external CSS and JavaScript files -->
+<script src="{% static 'cart/cart.js' %}"></script>
+{% endblock %}

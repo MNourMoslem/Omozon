@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from cart.models import Cart
 from .models import Order, OrderItem
+from .forms import OrderForm
 
 @login_required
 def checkout(request):
@@ -37,8 +38,13 @@ def checkout(request):
         
         messages.success(request, "Order placed successfully!")
         return redirect('order_detail', order_id=order.id)
-    
-    return render(request, 'orders/checkout.html', {'cart': cart})
+    else:
+        # Pre-fill the form with the user's default shipping address
+        default_shipping_address = request.user.default_shipping_address
+        return render(request, 'orders/checkout.html', {
+            'cart': cart,
+            'default_shipping_address': default_shipping_address
+        })
 
 @login_required
 def order_list(request):
@@ -48,4 +54,18 @@ def order_list(request):
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
-    return render(request, 'orders/order_detail.html', {'order': order}) 
+    return render(request, 'orders/order_detail.html', {'order': order})
+
+@login_required
+def create_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST, user=request.user)  # Pass the user to the form
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user  # Set the user for the order
+            order.save()
+            return redirect('order_success')  # Redirect to a success page
+    else:
+        form = OrderForm(user=request.user)  # Pass the user to pre-fill the form
+
+    return render(request, 'orders/create_order.html', {'form': form}) 

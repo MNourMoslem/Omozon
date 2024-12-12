@@ -1,11 +1,12 @@
 {% extends 'accounts/base_profile.html' %}
+{% load static %}
 
-{% block profile_specific_content %}
-<h3>Buyer Profile</h3>
-<p>Total Purchases: ${{ user.buyer_profile.total_purchases }}</p>
-<p>Shipping Address: {{ user.buyer_profile.default_shipping_address|default:"Not set" }}</p>
-
-<div class="profile-actions">
-    <a href="{% url 'order_list' %}" class="btn btn-info">View My Orders</a>
-</div>
-{% endblock %} 
+{% block content %}
+    {% block profile_specific_content %}
+        <h3>Buyer Profile</h3>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Phone Number: {{ user.phone_number|default:"Not Set" }}</p>
+        <p>Default Shipping Address: {{ user.default_shipping_address|default:"Not Set" }}</p>
+    {% endblock %}
+{% endblock %}
