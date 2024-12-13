@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Update Order Status for Order ID: {{ order.id }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="status">Status:</label>
+    <select name="status" required>
+        <option value="SHIPPED">Shipped</option>
+        <option value="DELIVERED">Delivered</option>
+        <option value="CANCELLED">Cancelled</option>
+    </select>
+    <br>
+    <label for="cancellation_reason">Cancellation Reason (if applicable):</label>
+    <textarea name="cancellation_reason" rows="3"></textarea>
+    <br>
+    <button type="submit" class="btn btn-primary">Update Status</button>
+</form>
+
+<h3>Cancellation Reasons</h3>
+<table>
+    <tr>
+        <th>Reason</th>
+        <th>Created At</th>
+    </tr>
+    {% for reason in cancellation_reasons %}
+    <tr>
+        <td>{{ reason.reason }}</td>
+        <td>{{ reason.created_at }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'seller_orders' %}">Back to Orders</a>
+{% endblock %} 

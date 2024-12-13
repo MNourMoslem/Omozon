@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Shipped Orders</h2>
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>User</th>
+        <th>Status</th>
+        <th>Total Price</th>
+        <th>Actions</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.status }}</td>
+        <td>${{ order.total_price }}</td>
+        <td>
+            <a href="{% url 'update_order_status' order.id %}">Update Status</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %} 

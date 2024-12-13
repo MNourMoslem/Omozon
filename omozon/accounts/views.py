@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import CustomUserCreationForm, SellerRegistrationForm, ProfileEditForm, SellerProfileEditForm
+from .forms import CustomUserCreationForm, SellerRegistrationForm, BuyerProfileEditForm, SellerProfileEditForm
 from .models import BuyerProfile, SellerProfile
 
 def register_buyer(request):
@@ -32,25 +32,25 @@ def profile_view(request):
 @login_required
 def switch_to_seller(request):
     if request.method == 'POST':
-        form = SellerRegistrationForm(request.POST)
+        form = SellerProfileEditForm(request.POST)
         if form.is_valid():
+
+            print(form.cleaned_data)
+            kwargs = {
+                'business_name': form.cleaned_data['business_name'],
+                'business_description': form.cleaned_data['business_description'],
+                'address': form.cleaned_data['address'],
+                'city': form.cleaned_data['city'],
+                'state': form.cleaned_data['state'],
+                'postal_code': form.cleaned_data['postal_code'],
+                'country': form.cleaned_data['country'],
+            }
             # Switch user account type to seller
-            request.user.switch_to_seller()
-            # Save additional seller information
-            SellerProfile.objects.create(
-                user=request.user,
-                business_name=form.cleaned_data['business_name'],
-                business_description=form.cleaned_data['business_description'],
-                address=form.cleaned_data['address'],
-                city=form.cleaned_data['city'],
-                state=form.cleaned_data['state'],
-                postal_code=form.cleaned_data['postal_code'],
-                country=form.cleaned_data['country'],
-            )
+            request.user.switch_to_seller(**kwargs)
             messages.success(request, 'You have successfully switched to a seller account!')
             return redirect('profile')
     else:
-        form = SellerRegistrationForm()
+        form = SellerProfileEditForm()
 
     return render(request, 'accounts/switch_to_seller.html', {'form': form})
 
@@ -90,21 +90,27 @@ def edit_profile(request):
     if user.account_type == 'SELLER':
         seller_profile = user.seller_profile
         if request.method == 'POST':
-            form = SellerProfileEditForm(request.POST, instance=seller_profile)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Seller profile updated successfully!")
+            profile_form = BuyerProfileEditForm(request.POST, instance=user)  # Handle user fields
+            seller_form = SellerProfileEditForm(request.POST, instance=seller_profile)  # Handle seller fields
+            if profile_form.is_valid() and seller_form.is_valid():
+                profile_form.save()  # Save user fields
+                seller_form.save()  # Save seller fields
+                messages.success(request, "Profile updated successfully!")
                 return redirect('profile')  # Redirect to the seller profile view
         else:
-            form = SellerProfileEditForm(instance=seller_profile)
+            profile_form = BuyerProfileEditForm(instance=user)  # Pre-fill user fields
+            seller_form = SellerProfileEditForm(instance=seller_profile)  # Pre-fill seller fields
     else:
         if request.method == 'POST':
-            form = ProfileEditForm(request.POST, instance=user)
+            form = BuyerProfileEditForm(request.POST, instance=user)
             if form.is_valid():
                 form.save()
                 messages.success(request, "Profile updated successfully!")
                 return redirect('profile')  # Redirect to the profile view
         else:
-            form = ProfileEditForm(instance=user)
+            form = BuyerProfileEditForm(instance=user)
 
-    return render(request, 'accounts/edit_profile.html', {'form': form})
+    return render(request, 'accounts/edit_profile.html', {
+        'profile_form': profile_form,
+        'seller_form': seller_form if user.account_type == 'SELLER' else None
+    })

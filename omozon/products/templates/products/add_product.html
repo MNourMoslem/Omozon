@@ -8,25 +8,13 @@
 {% block content %}
 <div class="add-product-container">
     <h2>Add New Product</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <label for="images">Additional Images:</label>
-        <div id="image-container">
-            <input type="file" name="images" accept="image/*" class="image-input">
-        </div>
-        <button type="button" id="add-image-button" class="btn btn-secondary">Add Image</button>
-
-        <button type="submit" class="btn btn-primary">Add Product</button>
-    </form>
-
-    <div id="added-images" class="added-images-container">
-        <h3>Added Images:</h3>
-        <div id="image-preview-container"></div>
+    <p>Select the type of product you want to add:</p>
+    <div class="product-options">
+        <a href="{% url 'add_product_dynamic' 'electronics' %}" class="btn btn-primary">Add Electronics</a>
+        <a href="{% url 'add_product_dynamic' 'clothing' %}" class="btn btn-primary">Add Clothing</a>
+        <a href="{% url 'add_product_dynamic' 'shoes' %}" class="btn btn-primary">Add Shoes</a>
+        <a href="{% url 'add_product_dynamic' 'books' %}" class="btn btn-primary">Add Books</a>
+        <a href="{% url 'add_product_dynamic' 'supermarket' %}" class="btn btn-primary">Add Supermarket</a>
     </div>
 </div>
-
-<!-- Link to external JavaScript file -->
-<script src="{% static 'products/add_product.js' %}"></script>
 {% endblock %}

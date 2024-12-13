@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'payments',
+    'delivery',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'cart/static'),  # This is where your static files are located
     os.path.join(BASE_DIR, 'orders/static'),  # This is where your static files are located
     os.path.join(BASE_DIR, 'payments/static'),  # This is where your static files are located
+    os.path.join(BASE_DIR, 'delivery/static'),  # This is where your static files are located
 ]
 
 # Default primary key field type

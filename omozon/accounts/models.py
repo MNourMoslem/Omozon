@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.conf import settings
 
 class CustomUser(AbstractUser):
     """
@@ -43,7 +44,7 @@ class CustomUser(AbstractUser):
         """
         return self.account_type != 'SELLER'
 
-    def switch_to_seller(self):
+    def switch_to_seller(self, **kwargs):
         """
         Switch user account type to seller
         """
@@ -52,7 +53,8 @@ class CustomUser(AbstractUser):
             self.save()
             
             # Create seller profile if not exists
-            SellerProfile.objects.get_or_create(user=self)
+            SellerProfile.objects.get_or_create(user=self, **kwargs)
+            BuyerProfile.objects.filter(user=self).delete()
             return True
         return False
 

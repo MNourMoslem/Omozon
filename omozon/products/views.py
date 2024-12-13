@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Product, ProductImage
-from .forms import ProductForm
+from .models import Product, ProductImage, Electronics, Clothing, Shoes, Books, Supermarket
+from .forms import ProductForm, ElectronicsForm, ClothingForm, ShoesForm, BooksForm, SupermarketForm
 from django.forms import modelformset_factory
 
 def product_list(request):
@@ -22,50 +22,84 @@ def seller_products(request):
 
 @login_required
 def add_product(request):
-    """
-    View to add a new product for a seller
-    """
     if request.user.account_type != 'SELLER':
         return redirect('home')
     
+    return render(request, 'products/add_product.html')
+
+@login_required
+def add_product_dynamic(request, product_type):
+    if request.user.account_type != 'SELLER':
+        return redirect('home')
+    
+    if product_type == 'electronics':
+        form = ElectronicsForm(request.POST or None)
+    elif product_type == 'clothing':
+        form = ClothingForm(request.POST or None)
+    elif product_type == 'shoes':
+        form = ShoesForm(request.POST or None)
+    elif product_type == 'books':
+        form = BooksForm(request.POST or None)
+    elif product_type == 'supermarket':
+        form = SupermarketForm(request.POST or None)
+    else:
+        return redirect('home')
+    
     if request.method == 'POST':
-        product_form = ProductForm(request.POST, request.FILES)
-        if product_form.is_valid():
-            product = product_form.save(commit=False)
+        if form.is_valid():
+            product = form.save(commit=False)
             product.seller = request.user.seller_profile
             product.save()
             # Handle multiple images
             images = request.FILES.getlist('images')
             for image in images:
                 ProductImage.objects.create(product=product, image=image)
-            messages.success(request, "Product added successfully!")
+            messages.success(request, f"{product.name} product added successfully!")
             return redirect('seller_products')
-    else:
-        product_form = ProductForm()
-    
-    return render(request, 'products/add_product.html', {'form': product_form})
+        else:
+            print("Form errors:", form.errors)
+
+    template = f'products/add_product_dynamic.html'
+    return render(request, template, {'form': form, 'product_type': product_type})
 
 @login_required
 def edit_product(request, product_id):
-    """
-    View to edit an existing product
-    """
     product = get_object_or_404(Product, id=product_id, seller=request.user.seller_profile)
-    
+
+    # Use the type field to determine which form to use
+    product_type = product.type
+
+    if product_type == Product.ELECTRONICS:
+        product = Electronics.objects.get(id=product_id)
+        form = ElectronicsForm(request.POST or None, request.FILES or None, instance=product)
+    elif product_type == Product.CLOTHING:
+        product = Clothing.objects.get(id=product_id)
+        form = ClothingForm(request.POST or None, request.FILES or None, instance=product)
+    elif product_type == Product.SHOES:
+        product = Shoes.objects.get(id=product_id)
+        form = ShoesForm(request.POST or None, request.FILES or None, instance=product)
+    elif product_type == Product.BOOKS:
+        product = Books.objects.get(id=product_id)
+        form = BooksForm(request.POST or None, request.FILES or None, instance=product)
+    elif product_type == Product.SUPERMARKET:
+        product = Supermarket.objects.get(id=product_id)
+        form = SupermarketForm(request.POST or None, request.FILES or None, instance=product)
+    else:
+        return redirect('seller_products')  # Redirect if product type is invalid
+
     if request.method == 'POST':
-        product_form = ProductForm(request.POST, request.FILES, instance=product)
-        if product_form.is_valid():
-            product_form.save()
+        if form.is_valid():
+            form.save()
             # Handle multiple images
             images = request.FILES.getlist('images')
             for image in images:
                 ProductImage.objects.create(product=product, image=image)
-            messages.success(request, "Product updated successfully!")
+            messages.success(request, f"{product.name} product updated successfully!")
             return redirect('seller_products')
-    else:
-        product_form = ProductForm(instance=product)
-    
-    return render(request, 'products/edit_product.html', {'form': product_form, 'product': product})
+        else:
+            print("Form errors:", form.errors)  # Print form errors for debugging
+
+    return render(request, 'products/edit_product.html', {'form': form, 'product': product, 'product_type': product_type})
 
 @login_required
 def delete_product(request, product_id):

@@ -9,4 +9,6 @@
         <p>Phone Number: {{ user.phone_number|default:"Not Set" }}</p>
         <p>Default Shipping Address: {{ user.default_shipping_address|default:"Not Set" }}</p>
     {% endblock %}
+
+    <a href="{% url 'switch_to_seller' %}" class="btn btn-primary">Switch to Seller</a>
 {% endblock %}

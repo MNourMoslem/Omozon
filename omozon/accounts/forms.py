@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, SellerProfile
+from .models import CustomUser, SellerProfile, BuyerProfile
 
 class CustomUserCreationForm(UserCreationForm):
     phone_number = forms.CharField(max_length=17, required=False, help_text='Enter your phone number.')
@@ -50,7 +50,7 @@ class SellerProfileEditForm(forms.ModelForm):
             'country'
         ]
 
-class ProfileEditForm(forms.ModelForm):
+class BuyerProfileEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'phone_number', 'default_shipping_address']
