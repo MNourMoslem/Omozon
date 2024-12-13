@@ -1,30 +1,46 @@
-{% extends 'accounts/base_profile.html' %}
-
+{% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'accounts/seller_profile.css' %}">
+{% endblock %}
+
 {% block content %}
-    {% block profile_specific_content %}
+    <div class="seller-profile-container">
         <h3>Seller Profile</h3>
-        <p>Username: {{ user.username }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Phone Number: {{ user.phone_number|default:"Not Set" }}</p>
-        <p>Default Shipping Address: {{ user.default_shipping_address|default:"Not Set" }}</p>
-        <p>Business Name: {{ user.seller_profile.business_name|default:"Not Set" }}</p>
-        <p>Business Description: {{ user.seller_profile.business_description|default:"Not Set" }}</p>
-        <p>Address: {{ user.seller_profile.address|default:"Not Set" }}</p>
-        <p>City: {{ user.seller_profile.city|default:"Not Set" }}</p>
-        <p>State: {{ user.seller_profile.state|default:"Not Set" }}</p>
-        <p>Postal Code: {{ user.seller_profile.postal_code|default:"Not Set" }}</p>
-        <p>Country: {{ user.seller_profile.country|default:"Not Set" }}</p>
-        <p>Total Products: {{ user.seller_profile.total_products }}</p>
-        <p>Total Sales: ${{ user.seller_profile.total_sales }}</p>
-        <p>Seller Rating: {{ user.seller_profile.seller_rating }}/5.0</p>
         
-        <div class="profile-actions">
-            <a href="{% url 'edit_profile' %}" class="btn btn-info">Edit Profile</a>
-            <a href="{% url 'order_list' %}" class="btn btn-info">View My Orders</a>
-            <a href="{% url 'seller_products' %}" class="btn btn-info">My Products</a>
-            <a href="{% url 'seller_orders' %}" class="btn btn-info">My Orders</a>
+        <div class="seller-profile-info">
+            <div class="info-container">
+                <h4>Personal Information</h4>
+                <div class="info-box">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Phone Number:</strong> {{ user.phone_number|default:"Not Set" }}</p>
+                </div>
+            </div>
+
+            <div class="info-container">
+                <h4>Business Information</h4>
+                <div class="info-box">
+                    <p><strong>Business Name:</strong> {{ user.seller_profile.business_name|default:"Not Set" }}</p>
+                    <p><strong>Business Description:</strong> {{ user.seller_profile.business_description|default:"Not Set" }}</p>
+                </div>
+            </div>
+
+            <div class="info-container">
+                <h4>Address Information</h4>
+                <div class="info-box">
+                    <p><strong>Address:</strong> {{ user.seller_profile.address|default:"Not Set" }}</p>
+                    <p><strong>City:</strong> {{ user.seller_profile.city|default:"Not Set" }}</p>
+                    <p><strong>State:</strong> {{ user.seller_profile.state|default:"Not Set" }}</p>
+                    <p><strong>Postal Code:</strong> {{ user.seller_profile.postal_code|default:"Not Set" }}</p>
+                    <p><strong>Country:</strong> {{ user.seller_profile.country|default:"Not Set" }}</p>
+                </div>
+            </div>
         </div>
-    {% endblock %}
+        <a href="{% url 'edit_profile' %}" class="btn btn-info">Edit Profile</a>
+        <a href="{% url 'order_list' %}" class="btn btn-info">View My Orders</a>
+        <a href="{% url 'seller_products' %}" class="btn btn-info">View My Products</a>
+    </div>
+    
 {% endblock %}

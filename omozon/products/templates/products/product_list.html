@@ -17,6 +17,9 @@
                 <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
                     Add to Cart
                 </a>
+                <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">
+                    View Product
+                </a>
             </div>
         {% empty %}
             <p>No products available.</p>

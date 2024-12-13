@@ -2,22 +2,18 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'products/add_product.css' %}">
+    <link rel="stylesheet" href="{% static 'products/add_product_dynamic.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="add-product-container">
-    <h2>Add {{ product_type }} Product</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <label for="images">Additional Images:</label>
-        <div id="image-container">
-            <input type="file" name="images" accept="image/*" class="image-input">
-        </div>
-        <button type="button" id="add-image-button" class="btn btn-secondary">Add Image</button>
-        <button type="submit" class="btn btn-primary">Add {{ product_type }}</button>
-    </form>
-    <a href="{% url 'seller_products' %}" class="btn btn-secondary">Cancel</a>
+<div class="add-product-dynamic-container">
+    <h2>Add Product</h2>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
 </div>
 {% endblock %} 

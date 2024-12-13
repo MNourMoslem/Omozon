@@ -1,14 +1,20 @@
 .profile-container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.profile-container:hover {
+    transform: scale(1.02);
 }
 
 .profile-container h2 {
     text-align: center;
+    color: #343a40;
 }
 
 .profile-actions {
@@ -18,13 +24,80 @@
 
 .profile-actions a {
     margin: 5px;
-    padding: 10px;
-    background-color: #007bff; /* Bootstrap primary color */
+    padding: 12px 20px;
+    background-color: #007bff;
     color: white;
-    border-radius: 4px;
+    border-radius: 5px;
     text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .profile-actions a:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.buyer-profile-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.info-container {
+    flex: 1;
+    margin: 0 10px;
+    background-color: #f0f8ff;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.info-box {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.attributes-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.attributes-box {
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.attributes-box p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.attributes-box strong {
+    color: #007bff;
+}
+
+/* Link Styles */
+.buyer-profile-container a {
+    display: inline-block; /* Make links behave like buttons */
+    padding: 10px 15px; /* Add padding for better click area */
+    margin-top: 15px; /* Space above the links */
+    background-color: #007bff; /* Primary color for links */
+    color: white; /* Text color */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s, transform 0.2s; /* Transition for hover effects */
+}
+
+.buyer-profile-container a:hover {
     background-color: #0056b3; /* Darker shade for hover */
-} 
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+ 

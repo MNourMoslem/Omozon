@@ -27,4 +27,68 @@
 
 .profile-actions a:hover {
     background-color: #0056b3; /* Darker shade for hover */
+}
+
+.seller-profile-info {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    margin-top: 20px; /* Space above the info section */
+}
+
+.info-container {
+    flex: 1; /* Allow containers to grow equally */
+    margin: 0 10px; /* Space between containers */
+    background-color: #f0f8ff; /* Light blue background for containers */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding inside the container */
+}
+
+.info-box {
+    padding: 10px; /* Padding inside the info box */
+    background-color: #ffffff; /* White background for info boxes */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.attributes-container {
+    margin-top: 20px; /* Space above the attributes section */
+    padding: 15px; /* Padding inside the container */
+    background-color: #f0f8ff; /* Light blue background for attributes */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.attributes-box {
+    padding: 10px; /* Padding inside the attributes box */
+    background-color: #ffffff; /* White background for attributes box */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-bottom: 10px; /* Space between attributes */
+}
+
+.attributes-box p {
+    margin: 5px 0; /* Space between paragraphs */
+    font-size: 14px; /* Font size for attributes */
+    color: #333; /* Darker text color for readability */
+}
+
+.attributes-box strong {
+    color: #007bff; /* Primary color for labels */
+}
+
+/* Link Styles */
+.seller-profile-container a {
+    display: inline-block; /* Make links behave like buttons */
+    padding: 10px 15px; /* Add padding for better click area */
+    margin-top: 15px; /* Space above the links */
+    background-color: #007bff; /* Primary color for links */
+    color: white; /* Text color */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s, transform 0.2s; /* Transition for hover effects */
+}
+
+.seller-profile-container a:hover {
+    background-color: #0056b3; /* Darker shade for hover */
+    transform: translateY(-2px); /* Lift effect on hover */
 } 

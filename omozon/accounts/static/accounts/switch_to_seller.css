@@ -1,26 +1,38 @@
 .switch-to-seller-container {
-    max-width: 400px;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.switch-to-seller-container:hover {
+    transform: scale(1.02);
 }
 
 .switch-to-seller-container h2 {
     text-align: center;
+    color: #343a40;
+}
+
+.switch-to-seller-container form {
+    margin-top: 20px;
 }
 
 .switch-to-seller-container button {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff; /* Bootstrap primary color */
+    padding: 12px;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .switch-to-seller-container button:hover {
-    background-color: #0056b3; /* Darker shade for hover */
+    background-color: #0056b3;
+    transform: translateY(-2px);
 } 

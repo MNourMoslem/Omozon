@@ -1,25 +1,33 @@
 .logout-container {
     max-width: 400px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: transform 0.3s;
+}
+
+.logout-container:hover {
+    transform: scale(1.02);
 }
 
 .logout-container h2 {
     margin-bottom: 10px;
+    color: #343a40;
 }
 
 .logout-container a {
-    padding: 10px;
-    background-color: #007bff; /* Bootstrap primary color */
+    padding: 12px;
+    background-color: #007bff;
     color: white;
-    border-radius: 4px;
+    border-radius: 5px;
     text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .logout-container a:hover {
-    background-color: #0056b3; /* Darker shade for hover */
+    background-color: #0056b3;
+    transform: translateY(-2px);
 } 

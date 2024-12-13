@@ -11,6 +11,12 @@
     
     <p>{{ product.description }}</p>
     <p>Price: ${{ product.price }}</p>
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+    {% else %}
+        <p>No image available for this product.</p>
+    {% endif %}
     
     <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
         Add to Cart

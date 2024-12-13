@@ -125,10 +125,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# Directory where static files will be collected
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 # Additional directories to look for static files
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -155,3 +151,6 @@ LOGOUT_REDIRECT_URL = 'home'
 STRIPE_PUBLIC_KEY = 'pk_test_51QV87UCM5yo1XmLXeqNdbSorv2KZnOj5hIjSbZYHokrvKOhqDEnehqI9S2f4Rz63BNVpd3ouPp0CBgebOvE4eGk200ZKerzUaE'
 STRIPE_SECRET_KEY = 'sk_test_51QV87UCM5yo1XmLXGG6vjdL1WNKWaJCs6ZwQkanDuFG09GMrIyVbaT0nWCXnNQXclHvinRvlcOoo4eux5WnpC5Ob00fu3hRVAU'
 STRIPE_WEBHOOK_SECRET = 'your_stripe_webhook_secret'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -1,0 +1,53 @@
+.delete-product-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for consistency */
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow for depth */
+    border: 1px solid #e0e0e0; /* Subtle border */
+}
+
+.delete-product-container h2 {
+    text-align: center;
+    color: #d9534f; /* Red color for delete warning */
+    font-family: 'Arial', sans-serif; /* Modern font */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.delete-product-container p {
+    text-align: center;
+    color: #555; /* Darker text for better readability */
+}
+
+form {
+    display: flex;
+    justify-content: center; /* Center the form elements */
+    gap: 15px; /* Space between form elements */
+}
+
+.btn {
+    padding: 10px 15px; /* More padding for buttons */
+    border: none;
+    border-radius: 5px; /* Rounded buttons */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.btn-danger {
+    background-color: #d9534f; /* Red for delete button */
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c; /* Darker shade on hover */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Gray for cancel button */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker shade on hover */
+} 

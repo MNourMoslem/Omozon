@@ -13,4 +13,12 @@
 
 .product-detail-container p {
     margin: 10px 0;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
 } 

@@ -55,16 +55,28 @@ def switch_to_seller(request):
     return render(request, 'accounts/switch_to_seller.html', {'form': form})
 
 def login_user(request):
+    username_error = None
+    password_error = None
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        
+        if user is None:
+            # Check if the user exists
+            if CustomUserCreationForm().Meta.model.objects.filter(username=username).exists():
+                password_error = "Incorrect password. Please try again."
+            else:
+                username_error = "User does not exist. Please check your username."
+        else:
             login(request, user)
             return redirect('home')
-        else:
-            messages.error(request, "Invalid username or password.")
-    return render(request, 'accounts/login.html')
+    
+    return render(request, 'accounts/login.html', {
+        'username_error': username_error,
+        'password_error': password_error,
+    })
 
 @login_required
 def logout_user(request):
