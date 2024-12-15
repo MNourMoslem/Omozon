@@ -85,7 +85,7 @@ def update_order_status(request, order_id):
 
 @login_required_delivery_manager()
 def pending_orders(request):
-    orders = _get_delivery_manager_orders(request, status='PENDING').order_by('-created_at')
+    orders = _get_delivery_manager_orders(request, status='PROCESSING').order_by('-created_at')
     return render(request, 'delivery/delivery_orders.html', {'orders': orders})
 
 @login_required_delivery_manager()
