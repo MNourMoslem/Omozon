@@ -7,6 +7,7 @@ from django.db.models import F
 from django.core.mail import send_mail
 from django.conf import settings
 from accounts.decorators import login_required_custom_user
+from accounts.models import SELLER
 
 login_required = login_required_custom_user()
 
@@ -85,7 +86,7 @@ def create_order(request):
 @login_required
 def seller_orders(request):
     """View for sellers to see their orders."""
-    if request.user.account_type != 'SELLER':
+    if request.user.account_type != SELLER:
         return redirect('home')  # Redirect to home if the user is not a seller
 
     orders = Order.objects.filter(user=request.user)  # Assuming the seller is the user
