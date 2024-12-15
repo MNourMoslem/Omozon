@@ -141,11 +141,10 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Add to existing settings
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Stripe Configuration
 STRIPE_PUBLIC_KEY = 'pk_test_51QV87UCM5yo1XmLXeqNdbSorv2KZnOj5hIjSbZYHokrvKOhqDEnehqI9S2f4Rz63BNVpd3ouPp0CBgebOvE4eGk200ZKerzUaE'

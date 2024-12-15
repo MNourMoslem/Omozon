@@ -1,17 +1,32 @@
 import stripe
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
+from django.db.models import F
 from django.views.decorators.csrf import csrf_exempt
 
-from orders.models import Order
+from orders.models import Order, OrderItem
+from delivery.models import DeliveryManagerUser
 from .models import Payment
 from .forms import PaymentForm
 
+from accounts.decorators import login_required_custom_user
+login_required = login_required_custom_user()
+
 # Configure Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+def _decrease_product_stock(order):
+    for item in OrderItem.objects.filter(order=order):
+        product = item.product
+        product.stock_quantity -= item.quantity
+        product.save()
+
+def _get_order_delivery_manager(order):
+    import random
+    delivery_managers = DeliveryManagerUser.objects.all()
+    return random.choice(delivery_managers)
 
 @login_required
 def checkout_view(request, order_id):
@@ -133,15 +148,17 @@ def payment_view(request, order_id):
 
             # Here you can add logic to validate the card details
             # For this example, we'll assume the payment is always successful
-            payment = Payment.objects.create(
-                user=request.user,
-                order=order,
-                amount=order.total_price,
-                status='COMPLETED'
-            )
+            # payment = Payment.objects.create(
+            #     user=request.user,
+            #     order=order,
+            #     amount=order.total_price,
+            #     status='COMPLETED'
+            # )
 
             # Update order status
             order.status = 'PROCESSING'
+            _decrease_product_stock(order)
+            order.delivery_manager = _get_order_delivery_manager(order)
             order.save()
 
             messages.success(request, "Payment successful! Your order is being processed.")

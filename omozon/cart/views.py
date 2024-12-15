@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Cart, CartItem
 from products.models import Product
+
+from accounts.decorators import login_required_custom_user
+login_required = login_required_custom_user()
 
 @login_required
 def view_cart(request):
@@ -15,6 +17,10 @@ def view_cart(request):
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    if product.stock_quantity <= 0:
+        messages.error(request, "Product is out of stock")
+        return redirect('product_detail', product_id=product_id)
+    
     cart, created = Cart.objects.get_or_create(user=request.user)
     
     # Check if product is already in cart
@@ -29,7 +35,7 @@ def add_to_cart(request, product_id):
         cart_item.save()
     
     messages.success(request, f"{product.name} added to cart")
-    return redirect('product_list')
+    return redirect('home')
 
 @login_required
 def remove_from_cart(request, item_id):

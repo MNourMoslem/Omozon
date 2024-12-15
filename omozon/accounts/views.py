@@ -1,30 +1,30 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required as login_required_all
 from django.contrib import messages
-from .forms import CustomUserCreationForm, SellerRegistrationForm, BuyerProfileEditForm, SellerProfileEditForm
-from .models import BuyerProfile, SellerProfile
+from .forms import BuyerRegistrationForm, SellerRegistrationForm, BuyerProfileEditForm, SellerProfileEditForm
+from .models import BuyerUser, SellerUser, BUYER, SELLER
+from .decorators import login_required_custom_user  
+
+login_required = login_required_custom_user()
 
 def register_buyer(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = BuyerRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.account_type = 'BUYER'  # Set account type to BUYER
-            user.save()
-            BuyerProfile.objects.create(user=user)  # Create buyer profile
+            form.save()
             messages.success(request, "Buyer account created successfully!")
             return redirect('login')  # Redirect to login or another page
     else:
-        form = CustomUserCreationForm()
+        form = BuyerRegistrationForm()
     
     return render(request, 'accounts/register.html', {'form': form})
 
 @login_required
 def profile_view(request):
-    if request.user.account_type == 'BUYER':
+    if request.user.is_buyer:
         return render(request, 'accounts/buyer_profile.html')    
-    elif request.user.account_type == 'SELLER':
+    elif request.user.is_seller:
         return render(request, 'accounts/seller_profile.html')
     else:
         return redirect('home')
@@ -65,7 +65,7 @@ def login_user(request):
         
         if user is None:
             # Check if the user exists
-            if CustomUserCreationForm().Meta.model.objects.filter(username=username).exists():
+            if BuyerRegistrationForm().Meta.model.objects.filter(username=username).exists():
                 password_error = "Incorrect password. Please try again."
             else:
                 username_error = "User does not exist. Please check your username."
@@ -78,7 +78,7 @@ def login_user(request):
         'password_error': password_error,
     })
 
-@login_required
+@login_required_all
 def logout_user(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
@@ -88,7 +88,7 @@ def register_seller(request):
     if request.method == 'POST':
         form = SellerRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
             messages.success(request, "Seller account created successfully!")
             return redirect('login')  # Redirect to login or another page
     else:
@@ -99,7 +99,7 @@ def register_seller(request):
 @login_required
 def edit_profile(request):
     user = request.user
-    if user.account_type == 'SELLER':
+    if user.is_seller:
         seller_profile = user.seller_profile
         if request.method == 'POST':
             profile_form = BuyerProfileEditForm(request.POST, instance=user)  # Handle user fields
@@ -120,9 +120,9 @@ def edit_profile(request):
                 messages.success(request, "Profile updated successfully!")
                 return redirect('profile')  # Redirect to the profile view
         else:
-            form = BuyerProfileEditForm(instance=user)
+            profile_form = BuyerProfileEditForm(instance=user)
 
     return render(request, 'accounts/edit_profile.html', {
         'profile_form': profile_form,
-        'seller_form': seller_form if user.account_type == 'SELLER' else None
+        'seller_form': seller_form if user.is_seller else None
     })

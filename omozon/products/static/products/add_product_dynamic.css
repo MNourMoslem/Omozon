@@ -6,7 +6,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
-    text-align: center;
+    text-align: left; /* Changed from center to left */
 }
 
 .add-product-dynamic-container:hover {
@@ -14,7 +14,7 @@
 }
 
 .add-product-dynamic-container h2 {
-    text-align: center;
+    text-align: left; /* Changed from center to left */
     color: #343a40;
 }
 

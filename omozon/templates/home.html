@@ -11,11 +11,17 @@
     <h1>Welcome to Omozon</h1>
     
     <section class="featured-products">
-        <h2>Featured Products</h2>
+        <h2>All Products</h2>
         <div class="product-grid">
-            {% for product in featured_products %}
+            {% for product in products %}
                 <div class="product-card">
                     <h3>{{ product.name }}</h3>
+                    <h3>{{ product.type2str }}</h3>
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
                     <p>Price: ${{ product.price }}</p>
                     <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">View Details</a>
                     <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>

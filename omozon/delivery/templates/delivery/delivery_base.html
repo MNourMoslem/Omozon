@@ -12,17 +12,20 @@
 <body>
     <nav class="navbar">
         <div class="nav-left">
-            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'home' %}">Omozon</a>
+
+            {% if request.user.is_authenticated and request.user.is_delivery_manager %}
+                <a href="{% url 'pending_orders' %}">Pending Orders</a>
+                <a href="{% url 'shipped_orders' %}">Shipped Orders</a>
+                <a href="{% url 'delivered_orders' %}">Delivered Orders</a>
+            {% endif %}
         </div>
         <div class="nav-right">
-            {% if user.is_authenticated and user.is_custom_user %}
-                <a href="{% url 'view_cart' %}">Cart</a>
-                <a href="{% url 'order_list' %}">My Orders</a>
-                <a href="{% url 'profile' %}">Profile</a>
-                <a href="{% url 'logout' %}">Logout</a>
+            {% if request.user.is_authenticated and request.user.is_delivery_manager %}
+                <a href="{% url 'delivery_logout' %}">Logout</a>
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'delivery_login' %}">Login</a>
+                <a href="{% url 'delivery_register' %}">Register</a>
             {% endif %}
         </div>
     </nav>

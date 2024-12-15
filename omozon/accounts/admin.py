@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, SellerProfile, BuyerProfile
+from .models import CustomUser, SellerUser, BuyerUser
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -9,12 +9,12 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('account_type',)}),
     )
 
-@admin.register(SellerProfile)
+@admin.register(SellerUser)
 class SellerProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'business_name', 'seller_rating', 'total_products']
     search_fields = ['business_name', 'user__username']
 
-@admin.register(BuyerProfile)
+@admin.register(BuyerUser)
 class BuyerProfileAdmin(admin.ModelAdmin):
     list_display = ['user']
     search_fields = ['user__username']

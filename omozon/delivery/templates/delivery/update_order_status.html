@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'delivery/delivery_base.html' %}
 
 {% block content %}
 <h2>Update Order Status for Order ID: {{ order.id }}</h2>
 <form method="post">
     {% csrf_token %}
+    <button type="submit" name="action" value="ship" class="btn btn-primary">Ship Order</button>
     <button type="submit" name="action" value="deliver" class="btn btn-primary">Deliver Order</button>
     <button type="submit" name="action" value="cancel" class="btn btn-danger">Cancel Order</button>
 </form>

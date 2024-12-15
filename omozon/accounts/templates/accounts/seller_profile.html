@@ -15,7 +15,11 @@
                 <div class="info-box">
                     <p><strong>Username:</strong> {{ user.username }}</p>
                     <p><strong>Email:</strong> {{ user.email }}</p>
+                </div>
+                <h4>Contact Information</h4>
+                <div class="info-box">
                     <p><strong>Phone Number:</strong> {{ user.phone_number|default:"Not Set" }}</p>
+                    <p><strong>Address:</strong> {{ user.default_shipping_address|default:"Not Set" }}</p>
                 </div>
             </div>
 
@@ -25,9 +29,6 @@
                     <p><strong>Business Name:</strong> {{ user.seller_profile.business_name|default:"Not Set" }}</p>
                     <p><strong>Business Description:</strong> {{ user.seller_profile.business_description|default:"Not Set" }}</p>
                 </div>
-            </div>
-
-            <div class="info-container">
                 <h4>Address Information</h4>
                 <div class="info-box">
                     <p><strong>Address:</strong> {{ user.seller_profile.address|default:"Not Set" }}</p>

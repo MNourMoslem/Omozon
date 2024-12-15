@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Product, ProductImage, Electronics, Clothing, Shoes, Books, Supermarket
 from .forms import ProductForm, ElectronicsForm, ClothingForm, ShoesForm, BooksForm, SupermarketForm
 from django.forms import modelformset_factory
 
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'products/product_list.html', {'products': products})
+from accounts.decorators import login_required_custom_user
+login_required = login_required_custom_user()
 
 @login_required
 def seller_products(request):
@@ -48,12 +46,12 @@ def add_product_dynamic(request, product_type):
     if request.method == 'POST':
         if form.is_valid():
             product = form.save(commit=False)
+            if product.stock_quantity <= 0:
+                messages.error(request, "Stock quantity must be greater than 0")
+                return redirect('add_product_dynamic', product_type=product_type)
+            
             product.seller = request.user.seller_profile
             product.save()
-            # Handle multiple images
-            images = request.FILES.getlist('images')
-            for image in images:
-                ProductImage.objects.create(product=product, image=image)
             messages.success(request, f"{product.name} product added successfully!")
             return redirect('seller_products')
         else:

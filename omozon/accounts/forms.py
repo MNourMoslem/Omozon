@@ -1,13 +1,19 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser, SellerProfile, BuyerProfile
+from .models import CustomUser, SellerUser, BuyerUser, BUYER, SELLER
 
-class CustomUserCreationForm(UserCreationForm):
-    phone_number = forms.CharField(max_length=17, required=False, help_text='Enter your phone number.')
-
+class BuyerRegistrationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'password1', 'password2', 'phone_number']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.account_type = BUYER
+        if commit:
+            user.save()
+            BuyerUser.objects.create(user=user)
+        return user
 
 class SellerRegistrationForm(UserCreationForm):
     business_name = forms.CharField(max_length=255, required=True, help_text='Enter your business name.')
@@ -24,22 +30,25 @@ class SellerRegistrationForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2', 'business_name', 'business_description', 'address', 'city', 'state', 'postal_code', 'country', 'phone_number']
 
     def save(self, commit=True):
-        user = super().save(commit)
-        SellerProfile.objects.create(
-            user=user,
-            business_name=self.cleaned_data['business_name'],
-            business_description=self.cleaned_data['business_description'],
-            address=self.cleaned_data['address'],
-            city=self.cleaned_data['city'],
-            state=self.cleaned_data['state'],
-            postal_code=self.cleaned_data['postal_code'],
-            country=self.cleaned_data['country'],
-        )
+        user = super().save(commit=False)
+        user.account_type = SELLER
+        if commit:
+            user.save()
+            SellerUser.objects.create(
+                user=user,
+                business_name=self.cleaned_data['business_name'],
+                business_description=self.cleaned_data['business_description'],
+                address=self.cleaned_data['address'],
+                city=self.cleaned_data['city'],
+                state=self.cleaned_data['state'],
+                postal_code=self.cleaned_data['postal_code'],
+                country=self.cleaned_data['country'],
+            )
         return user
 
 class SellerProfileEditForm(forms.ModelForm):
     class Meta:
-        model = SellerProfile
+        model = SellerUser
         fields = [
             'business_name',
             'business_description',

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block extra_css %}
@@ -11,7 +10,7 @@
     <h2>My Orders</h2>
     
     {% if orders %}
-        <table>
+        <table class="order-list-table">
             <thead>
                 <tr>
                     <th>Order ID</th>
@@ -19,6 +18,7 @@
                     <th>Total</th>
                     <th>Status</th>
                     <th>Actions</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +31,15 @@
                         <td>
                             <a href="{% url 'order_detail' order.id %}">View Details</a>
                         </td>
+                        {% if order.status == 'PENDING' %}
+                            <td>
+                                <a href="{% url 'delete_order' order.id %}">Delete</a>
+                            </td>
+                        {% else %}
+                            <td>
+                                <a> - </a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

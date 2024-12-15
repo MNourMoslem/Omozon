@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MinLengthValidator
-from accounts.models import SellerProfile
 
 class Product(models.Model):
     """Base Product Model"""
@@ -25,7 +24,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     stock_quantity = models.PositiveIntegerField(default=0)
     seller = models.ForeignKey(
-        'accounts.SellerProfile', 
+        "accounts.SellerUser", 
         on_delete=models.CASCADE, 
         related_name='products', 
         null=True,  
@@ -38,6 +37,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def type2str(self):
+        return self.PRODUCT_TYPES[self.type - 1][1]
 
 class Electronics(Product):
     """Electronics Product Subtype"""

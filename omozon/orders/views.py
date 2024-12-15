@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from cart.models import Cart
 from .models import Order, OrderItem, CancellationReason
 from .forms import OrderForm
+from django.db.models import F
 from django.core.mail import send_mail
 from django.conf import settings
+from accounts.decorators import login_required_custom_user
+
+login_required = login_required_custom_user()
 
 @login_required
 def checkout(request):
@@ -28,6 +31,10 @@ def checkout(request):
         
         # Transfer cart items to order items
         for cart_item in cart.items.all():
+            if cart_item.quantity > cart_item.product.stock_quantity:
+                messages.error(request, "Product is out of stock")
+                return redirect('view_cart')
+
             OrderItem.objects.create(
                 order=order,
                 product=cart_item.product,
@@ -37,7 +44,7 @@ def checkout(request):
         
         # Clear the cart
         cart.items.all().delete()
-        
+
         messages.success(request, "Order placed successfully!")
         return redirect('order_detail', order_id=order.id)
     else:
@@ -98,9 +105,21 @@ def update_order_status(request, order_id):
             order.status = 'CANCELLED'
             CancellationReason.objects.create(order=order, reason=cancellation_reason)
             messages.success(request, "Order has been cancelled.")
+            order.products.all().update(stock_quantity=F('stock_quantity') + order.products.all().count())
 
         order.save()
         return redirect('seller_orders')
 
     cancellation_reasons = order.cancellation_reasons.all()  # Get cancellation reasons for the order
     return render(request, 'orders/update_order_status.html', {'order': order, 'cancellation_reasons': cancellation_reasons})
+
+@login_required
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    if order.status != 'PENDING':
+        messages.error(request, "You cannot delete an order that is not pending")
+        return redirect('order_list')
+    
+    order.delete()
+    return redirect('order_list')

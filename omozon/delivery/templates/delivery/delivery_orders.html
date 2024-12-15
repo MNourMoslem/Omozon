@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'delivery/delivery_base.html' %}
 
 {% block content %}
 <h2>Shipped Orders</h2>
@@ -16,9 +16,15 @@
         <td>{{ order.user.username }}</td>
         <td>{{ order.status }}</td>
         <td>${{ order.total_price }}</td>
-        <td>
-            <a href="{% url 'update_order_status' order.id %}">Update Status</a>
-        </td>
+        {% if order.status == 'PENDING' or order.status == 'SHIPPED' %}
+            <td>
+                <a href="{% url 'update_order_status' order.id %}">Update Status</a>
+            </td>
+        {% else %}
+            <td>
+                <a>-</a>
+            </td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
