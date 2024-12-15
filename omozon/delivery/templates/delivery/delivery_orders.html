@@ -16,7 +16,7 @@
         <td>{{ order.user.username }}</td>
         <td>{{ order.status }}</td>
         <td>${{ order.total_price }}</td>
-        {% if order.status == 'PENDING' or order.status == 'SHIPPED' %}
+        {% if order.status == 'PROCESSING' or order.status == 'SHIPPED' %}
             <td>
                 <a href="{% url 'update_order_status' order.id %}">Update Status</a>
             </td>
