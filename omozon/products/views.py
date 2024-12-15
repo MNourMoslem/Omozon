@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import Product, ProductImage, Electronics, Clothing, Shoes, Books, Supermarket
 from .forms import ProductForm, ElectronicsForm, ClothingForm, ShoesForm, BooksForm, SupermarketForm
 from django.forms import modelformset_factory
+from accounts.models import SELLER
 
 from accounts.decorators import login_required_custom_user
 login_required = login_required_custom_user()
@@ -12,7 +13,7 @@ def seller_products(request):
     """
     View to display and manage seller's products
     """
-    if request.user.account_type != 'SELLER':
+    if request.user.account_type != SELLER:
         return redirect('home')
     
     products = Product.objects.filter(seller=request.user.seller_profile)
@@ -20,14 +21,14 @@ def seller_products(request):
 
 @login_required
 def add_product(request):
-    if request.user.account_type != 'SELLER':
+    if request.user.account_type != SELLER:
         return redirect('home')
     
     return render(request, 'products/add_product.html')
 
 @login_required
 def add_product_dynamic(request, product_type):
-    if request.user.account_type != 'SELLER':
+    if request.user.account_type != SELLER:
         return redirect('home')
     
     if product_type == 'electronics':
