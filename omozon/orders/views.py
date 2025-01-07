@@ -8,29 +8,32 @@ from django.core.mail import send_mail
 from django.conf import settings
 from accounts.decorators import login_required_custom_user
 from accounts.models import SELLER
+from orders.models import PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED
+import random
+from delivery.models import DeliveryManagerUser
 
 login_required = login_required_custom_user()
+
+def get_delivery_manager(orderitem):
+    return random.choice(DeliveryManagerUser.objects.all())
 
 @login_required
 def checkout(request):
     cart = get_object_or_404(Cart, user=request.user)
     
     if request.method == 'POST':
-        # Get shipping address from form
         shipping_address = request.POST.get('shipping_address')
         
         if not shipping_address:
             messages.error(request, "Please provide a shipping address")
             return render(request, 'orders/checkout.html', {'cart': cart})
         
-        # Create order
         order = Order.objects.create(
             user=request.user,
             shipping_address=shipping_address,
             total_price=cart.get_total_price()
         )
         
-        # Transfer cart items to order items
         for cart_item in cart.items.all():
             if cart_item.quantity > cart_item.product.stock_quantity:
                 messages.error(request, "Product is out of stock")
@@ -43,7 +46,6 @@ def checkout(request):
                 price=cart_item.product.price
             )
         
-        # Clear the cart
         cart.items.all().delete()
 
         messages.success(request, "Order placed successfully!")
@@ -93,32 +95,36 @@ def seller_orders(request):
     return render(request, 'orders/seller_orders.html', {'orders': orders})
 
 @login_required
-def update_order_status(request, order_id):
+def update_order_status(request, orderitem_id):
     """View for sellers to cancel the order status."""
-    order = get_object_or_404(Order, id=order_id)
+    orderitem = get_object_or_404(OrderItem, id=orderitem_id)
 
     if request.method == 'POST':
+        status = request.POST.get('status')
         cancellation_reason = request.POST.get('cancellation_reason', '')
 
-        if order.status == 'SHIPPED':
-            messages.error(request, "You cannot cancel an order that has already been shipped.")
-        else:
-            order.status = 'CANCELLED'
-            CancellationReason.objects.create(order=order, reason=cancellation_reason)
-            messages.success(request, "Order has been cancelled.")
-            order.products.all().update(stock_quantity=F('stock_quantity') + order.products.all().count())
+        if status == 'PROCESS':
+            delivery_manager = get_delivery_manager()
+            orderitem.process(delivery_manager=delivery_manager)
+        elif status == "CANCEL":
+            if not orderitem.is_pending:
+                messages.error(request, "You cannot cancel an order that has already been processed.")
+            else:
+                orderitem.cancel(reason=cancellation_reason)
+                messages.success(request, "Order has been cancelled.")
+                orderitem.products.all().update(stock_quantity=F('stock_quantity') + orderitem.products.all().count())
 
-        order.save()
+        orderitem.save()
         return redirect('seller_orders')
 
-    cancellation_reasons = order.cancellation_reasons.all()  # Get cancellation reasons for the order
-    return render(request, 'orders/update_order_status.html', {'order': order, 'cancellation_reasons': cancellation_reasons})
+    cancellation_reasons = orderitem.cancellation_reasons.all()  # Get cancellation reasons for the order
+    return render(request, 'orders/update_order_status.html', {'orderitem': orderitem, 'cancellation_reasons': cancellation_reasons})
 
 @login_required
 def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     
-    if order.status != 'PENDING':
+    if order.is_pending:
         messages.error(request, "You cannot delete an order that is not pending")
         return redirect('order_list')
     

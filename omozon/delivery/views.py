@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from orders.models import Order
+from orders.models import OrderItem
 from .forms import DeliveryLoginForm, DeliveryRegisterForm
 from .models import DeliveryManagerUser
 from django.http import HttpResponseForbidden
 from accounts.models import DELIVERY_MANAGER
+from orders.models import PROCESSING, SHIPPED, DELIVERED
 
 def login_required_delivery_manager():
     def decorator(view_func):
@@ -21,7 +22,7 @@ def login_required_delivery_manager():
 
 def _get_delivery_manager_orders(request, **kwargs):
     user = DeliveryManagerUser.objects.get(user=request.user)
-    orders = Order.objects.filter(delivery_manager=user, **kwargs)
+    orders = OrderItem.objects.filter(delivery_manager=user, **kwargs)
     return orders
 
 def delivery_login(request):
@@ -59,41 +60,41 @@ def delivery_logout(request):
     return redirect('delivery_login')
 
 @login_required_delivery_manager()
-def update_order_status(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    if order.status != 'PENDING' or order.status != 'SHIPPED':
+def update_order_status(request, orderitem_id):
+    orderitem = get_object_or_404(OrderItem, id=orderitem_id)
+    if orderitem.is_pending or orderitem.is_shipped:
         messages.error(request, "Order is not in a valid status to be updated.")
         return redirect('delivered_orders')
 
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'deliver':
-            order.status = 'DELIVERED'
+            orderitem.deliver()
             messages.success(request, "Order has been delivered.")
         elif action == 'ship':
-            order.status = 'SHIPPED'
+            orderitem.ship()
             messages.success(request, "Order has been shipped.")
         elif action == 'cancel':
-            order.status = 'CANCELLED'
+            orderitem.return_to_seller()
             messages.success(request, "Order has been cancelled.")
         else:
             messages.error(request, "Invalid action.")
-        order.save()
+        orderitem.save()
         return redirect('pending_orders')
 
-    return render(request, 'delivery/update_order_status.html', {'order': order})
+    return render(request, 'delivery/update_order_status.html', {'orderitem': orderitem})
 
 @login_required_delivery_manager()
 def pending_orders(request):
-    orders = _get_delivery_manager_orders(request, status='PROCESSING').order_by('-created_at')
+    orders = _get_delivery_manager_orders(request, status=PROCESSING).order_by('-created_at')
     return render(request, 'delivery/delivery_orders.html', {'orders': orders})
 
 @login_required_delivery_manager()
 def shipped_orders(request):
-    orders = _get_delivery_manager_orders(request, status='SHIPPED').order_by('-created_at')
+    orders = _get_delivery_manager_orders(request, status=SHIPPED).order_by('-created_at')
     return render(request, 'delivery/delivery_orders.html', {'orders': orders})
 
 @login_required_delivery_manager()
 def delivered_orders(request):
-    orders = _get_delivery_manager_orders(request, status='DELIVERED').order_by('-created_at')
+    orders = _get_delivery_manager_orders(request, status=DELIVERED).order_by('-created_at')
     return render(request, 'delivery/delivery_orders.html', {'orders': orders})

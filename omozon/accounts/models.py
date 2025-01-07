@@ -72,7 +72,7 @@ class CustomUser(AbstractUser):
         Check if user can switch to seller account
         You can add additional logic here if needed
         """
-        return self.is_buyer()
+        return self.is_buyer
 
     def switch_to_seller(self, **kwargs):
         """

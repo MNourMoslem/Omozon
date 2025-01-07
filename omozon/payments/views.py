@@ -23,11 +23,6 @@ def _decrease_product_stock(order):
         product.stock_quantity -= item.quantity
         product.save()
 
-def _get_order_delivery_manager(order):
-    import random
-    delivery_managers = DeliveryManagerUser.objects.all()
-    return random.choice(delivery_managers)
-
 @login_required
 def checkout_view(request, order_id):
     """
@@ -80,9 +75,8 @@ def payment_success(request, order_id):
     )
     
     # Update order status
-    order.status = 'PROCESSING'
-    order.save()
-    
+    order.set_as_payed()
+
     messages.success(request, "Payment successful! Your order is being processed.")
     return redirect('order_detail', order_id=order.id)
 
@@ -127,8 +121,7 @@ def stripe_webhook(request):
                 amount=order.total_price,
                 status='COMPLETED'
             )
-            order.status = 'PROCESSING'
-            order.save()
+            order.set_as_payed()
         except Order.DoesNotExist:
             pass
     
@@ -156,9 +149,8 @@ def payment_view(request, order_id):
             # )
 
             # Update order status
-            order.status = 'PROCESSING'
             _decrease_product_stock(order)
-            order.delivery_manager = _get_order_delivery_manager(order)
+            order.set_as_payed()
             order.save()
 
             messages.success(request, "Payment successful! Your order is being processed.")

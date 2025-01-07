@@ -25,6 +25,7 @@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +35,7 @@
                         <td>{{ item.quantity }}</td>
                         <td>${{ item.price }}</td>
                         <td>${{ item.get_total_price }}</td>
+                        <td>{{ item.status_as_string }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -51,7 +53,7 @@
         <p>{{ order.shipping_address }}</p>
     </div>
     
-    {% if order.status == 'PENDING' %}
+    {% if order.is_pending %}
         <div class="payment-section">
             <a href="{% url 'payment_view' order.id %}" class="btn btn-primary">
                 Proceed to Payment

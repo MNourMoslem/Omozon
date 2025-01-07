@@ -7,7 +7,7 @@ from .views import (
 urlpatterns = [
     path('login/', delivery_login, name='delivery_login'),
     path('pending-orders/', pending_orders, name='pending_orders'),
-    path('update-order-status/<int:order_id>/', update_order_status, name='update_order_status'),
+    path('update-order-status/<int:orderitem_id>/', update_order_status, name='update_order_status_delivery'),
     path('register/', delivery_register, name='delivery_register'),
     path('logout/', delivery_logout, name='delivery_logout'),
     path('shipped-orders/', shipped_orders, name='shipped_orders'),
