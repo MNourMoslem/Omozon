@@ -147,8 +147,8 @@ LOGOUT_REDIRECT_URL = 'home'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Stripe Configuration
-STRIPE_PUBLIC_KEY = 'pk_test_51QV87UCM5yo1XmLXeqNdbSorv2KZnOj5hIjSbZYHokrvKOhqDEnehqI9S2f4Rz63BNVpd3ouPp0CBgebOvE4eGk200ZKerzUaE'
-STRIPE_SECRET_KEY = 'sk_test_51QV87UCM5yo1XmLXGG6vjdL1WNKWaJCs6ZwQkanDuFG09GMrIyVbaT0nWCXnNQXclHvinRvlcOoo4eux5WnpC5Ob00fu3hRVAU'
+STRIPE_PUBLIC_KEY = 'your_stripe_public_key'
+STRIPE_SECRET_KEY = 'your_stripe_secret_key'
 STRIPE_WEBHOOK_SECRET = 'your_stripe_webhook_secret'
 
 MEDIA_URL = '/media/'
